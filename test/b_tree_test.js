@@ -9,7 +9,7 @@ function verifyNode(node, order, isRoot=false) {
   const numChildren = node.children().length,
         isLeaf = numChildren === 0;
   assert(numChildren <= order, `Too many children, were ${numChildren}, limit ${order}`);
-  if (!isLeaf) {
+  if (!isLeaf && !isRoot) {
     assert(numChildren >= Math.ceil(order / 2), "Too few children");
   }
   if (isRoot && !isLeaf) {
@@ -99,8 +99,8 @@ describe("insertion & searching", () => {
   }
 
   it("inserts a whole bunch of elements", () => {
-    const tree = new BTree(3),
-          keys = randomSeq(1000);
+    const tree = new BTree(11),
+          keys = randomSeq(2000);
     bulkInsert(tree, ...keys);
     assertIncludes(tree, ...keys);
     verifyTree(tree);
