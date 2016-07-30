@@ -1,3 +1,21 @@
+function indexOfSorted(array, key) {
+  let min = 0,
+      max = array.length - 1;
+  while (min <= max) {
+    let mid = min + Math.floor((max - min) / 2);
+    if (array[mid] === key) {
+      return mid;
+    } else if (min >= max) {
+      return -1;
+    } else if (array[mid] < key) {
+      min = mid + 1;
+    } else if (array[mid] > key) {
+      max = mid - 1;
+    }
+  }
+  return -1;
+}
+
 class Node {
   constructor(keys=[], children=[]) {
     this._keys = keys;
@@ -14,7 +32,7 @@ class Node {
   }
 
   includes(key) {
-    return this._keys.includes(key) ||
+    return indexOfSorted(this._keys, key) !== -1 ||
       this._children.some(node => node.includes(key));
   }
 
@@ -41,12 +59,12 @@ class Node {
   }
 
   insertChildBefore(key, node) {
-    this._children[this._keys.indexOf(key)] = node;
+    this._children[indexOfSorted(this._keys, key)] = node;
     node.parent = this;
   }
 
   insertChildAfter(key, node) {
-    const idx = this._keys.indexOf(key);
+    const idx = indexOfSorted(this._keys, key);
     this._children.splice(idx+1, 0, node);
     node.parent = this;
   }
