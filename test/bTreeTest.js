@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { assert } from "chai";
-import BTree from "../b_tree.js";
+import BTree from "../bTree.js";
 
 function verifyNode(node, order, isRoot=false) {
   const numChildren = node.children().length,
