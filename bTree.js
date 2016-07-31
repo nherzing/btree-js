@@ -42,14 +42,21 @@ class Node {
 
   insert(key) {
     const childIdx = this._childIdxFor(key);
-    this._keys.splice(childIdx, 0, key);
+    if (childIdx !== null) {
+      this._keys.splice(childIdx, 0, key);
+    }
   }
 
   leafFor(key) {
     if (this._children.length === 0) {
       return this;
     }
-    return this._children[this._childIdxFor(key)].leafFor(key);
+    const childIdx = this._childIdxFor(key);
+    if (childIdx !== null) {
+      return this._children[childIdx].leafFor(key);
+    } else {
+      return null;
+    }
   }
 
   split() {
@@ -106,10 +113,10 @@ export default class BTree {
   }
 
   insert(key) {
-    if (this.includes(key)) {
+    const leaf = this.root.leafFor(key);
+    if (leaf === null) {
       return;
     }
-    const leaf = this.root.leafFor(key);
     leaf.insert(key);
     this._splitUp(leaf);
   }
