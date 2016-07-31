@@ -1,9 +1,6 @@
+import { describe, it } from "mocha";
 import { assert } from "chai";
 import BTree from "../b_tree.js";
-
-// order = max # children
-// at most order-1 keys per node
-// every node has at least (order-1)/2
 
 function verifyNode(node, order, isRoot=false) {
   const numChildren = node.children().length,
@@ -33,7 +30,7 @@ function bulkInsert(tree, ...keys) {
 }
 
 function assertIncludes(tree, ...keys) {
-  keys.forEach(key => assert(tree.includes(key), `Can"t find value ${key}.`));
+  keys.forEach(key => assert(tree.includes(key), `Can't find value ${key}.`));
 }
 
 describe("new tree", () => {
@@ -78,7 +75,7 @@ describe("insertion & searching", () => {
     verifyTree(tree);
   });
 
-  it("inserts 10 random elements", () => {
+  it("inserts 5 random elements", () => {
     const tree = new BTree(3),
           keys = [5, 8, 2, 4, 0];
     bulkInsert(tree, ...keys);
@@ -86,7 +83,7 @@ describe("insertion & searching", () => {
     verifyTree(tree);
   });
 
-  it("inserts 20 random elements", () => {
+  it("inserts 14 random elements", () => {
     const tree = new BTree(3),
           keys = [278,347,161,833,693,358,95,874,816,621,271,326,73,295];
     bulkInsert(tree, ...keys);
@@ -99,10 +96,12 @@ describe("insertion & searching", () => {
   }
 
   it("inserts a whole bunch of elements", function() {
-    const tree = new BTree(30),
-          keys = randomSeq(5000);
-    bulkInsert(tree, ...keys);
-    assertIncludes(tree, ...keys);
-    verifyTree(tree);
+    for (let i = 0; i < 10; i++) {
+      const tree = new BTree(300),
+            keys = randomSeq(50000);
+      bulkInsert(tree, ...keys);
+      assertIncludes(tree, ...keys);
+      verifyTree(tree);
+    }
   });
 });

@@ -99,6 +99,7 @@ class Node {
 }
 
 export default class BTree {
+  // order = max # of children
   constructor(order) {
     this.order = order;
     this.root = new Node([]);
