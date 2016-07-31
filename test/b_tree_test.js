@@ -98,9 +98,9 @@ describe("insertion & searching", () => {
     return Array(len).fill().map(i => Math.floor(Math.random() * 100000));
   }
 
-  it("inserts a whole bunch of elements", () => {
-    const tree = new BTree(11),
-          keys = randomSeq(2000);
+  it("inserts a whole bunch of elements", function() {
+    const tree = new BTree(30),
+          keys = randomSeq(5000);
     bulkInsert(tree, ...keys);
     assertIncludes(tree, ...keys);
     verifyTree(tree);

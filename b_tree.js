@@ -5,8 +5,6 @@ function indexOfSorted(array, key) {
     let mid = min + Math.floor((max - min) / 2);
     if (array[mid] === key) {
       return mid;
-    } else if (min >= max) {
-      return -1;
     } else if (array[mid] < key) {
       min = mid + 1;
     } else if (array[mid] > key) {
@@ -32,8 +30,14 @@ class Node {
   }
 
   includes(key) {
-    return indexOfSorted(this._keys, key) !== -1 ||
-      this._children.some(node => node.includes(key));
+    if (indexOfSorted(this._keys, key) !== -1) {
+      return true;
+    }
+    const childIdx = this._childIdxFor(key);
+    if (childIdx < this._children.length) {
+      return this._children[childIdx].includes(key);
+    }
+    return false;
   }
 
   insert(key) {
@@ -70,8 +74,27 @@ class Node {
   }
 
   _childIdxFor(key) {
-    const idx = this._keys.findIndex(nodeKey => nodeKey > key);
-    return idx === -1 ? this._keys.length : idx;
+    let min = 0,
+        max = this._keys.length - 1;
+    while (min <= max) {
+      const idx = min + Math.floor((max - min) / 2);
+      if (this._keys[idx] === key) {
+        return null;
+      } else if (this._keys[idx] > key) {
+        if (idx === 0 || this._keys[idx-1] < key) {
+          return idx;
+        } else {
+          max = idx - 1;
+        }
+      } else if (this._keys[idx] < key) {
+        if (idx === this._keys.length - 1) {
+          return this._keys.length;
+        } else {
+          min = idx + 1;
+        }
+      }
+    }
+    return this._keys.length;
   }
 }
 
